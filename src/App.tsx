@@ -6,6 +6,7 @@ import './index.css';
 
 const Home = lazy(() => import('./pages/home'));
 const Trivia = lazy(() => import('./pages/trivia'));
+const Answers = lazy(() => import('./pages/answers'));
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/trivia" element={<Trivia />} />
+            <Route path="/answers" element={<Answers />} />
           </Routes>
         </Suspense>
       </Router>

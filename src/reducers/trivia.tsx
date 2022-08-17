@@ -1,12 +1,13 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import initialState from './initialState';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getQuestions } from '../services';
 import type { RootState } from '../store';
+import { ITriviaState } from '../types';
 
-interface TriviaState {
-  questions: Array<[]>;
-  loading: boolean;
-}
+const initialState = {
+  questions: [],
+  loading: false,
+  answers: []
+};
 
 export const fetchQuestions = createAsyncThunk(
   'trivia/fetchQuestions',
@@ -20,8 +21,12 @@ export const fetchQuestions = createAsyncThunk(
 
 export const triviaSlice = createSlice({
   name: 'trivia',
-  initialState: initialState as TriviaState,
-  reducers: {},
+  initialState: initialState as ITriviaState,
+  reducers: {
+    setAnswer: (state, action: PayloadAction<string>) => {
+      state.answers.push(action.payload);
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchQuestions.pending, (state) => {
       state.loading = true;
@@ -36,6 +41,8 @@ export const triviaSlice = createSlice({
     });
   }
 });
+
+export const { setAnswer } = triviaSlice.actions;
 
 export const selectTrivia = (state: RootState) => state.trivia;
 

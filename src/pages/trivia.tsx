@@ -1,26 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from '../hooks';
-import { selectTrivia, fetchQuestions } from '../reducers/trivia';
-import { Loading, Title } from '../components';
+import { selectTrivia, fetchQuestions, setAnswer } from '../reducers/trivia';
+import { Loading, Question } from '../components';
 
 const Trivia: React.FC = () => {
+  const [questionCounter, setQuestionCounter] = useState<number>(0);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const trivia = useSelector(selectTrivia);
-
-  console.log(trivia);
 
   useEffect(() => {
     dispatch(fetchQuestions());
   }, []);
 
+  function handleOnClick(answer: string) {
+    dispatch(setAnswer(answer));
+    if (questionCounter < trivia.questions.length - 1) {
+      setQuestionCounter(questionCounter + 1);
+    } else {
+      navigate('/answers');
+    }
+  }
+
+  const hasTrivias = Array.isArray(trivia.questions) && trivia.questions.length;
+
   return (
-    <section className="md:w-1/2 md:px-0 px-2 w-full m-auto">
+    <section className="md:w-[600px] md:px-0 px-2 w-full m-auto pt-10">
       {trivia.loading && <Loading />}
-      <p className="text-red-500">Hola</p>
-      {Array.isArray(trivia.questions) &&
-        trivia.questions.map((t: any, i: number) => (
-          <Title key={i} title={t.category} />
-        ))}
+      {hasTrivias ? (
+        <Question
+          question={trivia.questions[questionCounter]}
+          onClick={handleOnClick}
+        />
+      ) : (
+        <p className="flex justify-center text-slate-600 text-base mt-2">
+          Ups! There is no trivia
+        </p>
+      )}
     </section>
   );
 };

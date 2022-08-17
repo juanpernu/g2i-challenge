@@ -1,2 +1,3 @@
-export { Loading } from './commons/Loading';
-export { Title } from './commons/Title';
+export { Loading, Button, Title, Text } from './commons';
+export { Question } from './Question';
+export { Answer } from './Answer';
