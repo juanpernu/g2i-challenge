@@ -3,10 +3,11 @@ import { getQuestions } from '../services';
 import type { RootState } from '../store';
 import { ITriviaState } from '../types';
 
-const initialState = {
+export const initialState = {
   questions: [],
   loading: false,
-  answers: []
+  answers: [],
+  error: false
 };
 
 export const fetchQuestions = createAsyncThunk(
@@ -38,6 +39,7 @@ export const triviaSlice = createSlice({
     builder.addCase(fetchQuestions.rejected, (state) => {
       state.loading = false;
       state.questions = [];
+      state.error = true;
     });
   }
 });

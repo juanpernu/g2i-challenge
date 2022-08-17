@@ -15,6 +15,7 @@ export interface ITriviaState {
   questions: IQuestion[];
   loading: boolean;
   answers: string[];
+  error: boolean;
 }
 
 export interface IQuestion {
